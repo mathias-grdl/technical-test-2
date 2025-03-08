@@ -18,7 +18,7 @@ export default function EditProject() {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
       console.log("Edit - Données reçues du projet:", u);
-      setProject(Array.isArray(u) ? u[0] : u); // Même correction que dans view.js
+      setProject(Array.isArray(u) ? u[0] : u);
     })();
   }, []);
 

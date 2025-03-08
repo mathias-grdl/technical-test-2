@@ -4,6 +4,8 @@ const router = express.Router();
 
 const ActivityObject = require("../models/activity");
 const ProjectObject = require("../models/project");
+const { validateActivity } = require("../validators/activity");
+const validationMiddleware = require("../middleware/validationMiddleware");
 
 const SERVER_ERROR = "SERVER_ERROR";
 
@@ -38,7 +40,7 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
   }
 });
 
-router.post("/", passport.authenticate("user", { session: false }), async (req, res) => {
+router.post("/", passport.authenticate("user", { session: false }), validateActivity, validationMiddleware, async (req, res) => {
   try {
     const body = req.body;
     await ProjectObject.findOneAndUpdate({ _id: body.projectId }, { last_updated_at: new Date() }, { new: true });

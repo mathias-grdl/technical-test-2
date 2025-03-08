@@ -1,0 +1,98 @@
+### User Signup
+POST http://localhost:8080/user/signup
+Content-Type: application/json
+
+{
+  "name": "New User",
+  "email": "newuser@example.com",
+  "password": "newpassword",
+  "costPerDay": 100,
+  "sellPerDay": 150
+}
+
+### Authenticate User and Get Token
+POST http://localhost:8080/user/signin
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "newpassword"
+}
+
+### Test Valid User Data
+POST http://localhost:8080/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NjNDYxZDZiYTJiYzI2MDgzY2I4NTQiLCJpYXQiOjE3NDE0NDA1NDEsImV4cCI6MTc3Mjk5ODE0MX0.hloGsCdxsp57sfmfoFCN-XRC-2_fSkOmXhmUY9f_P9g
+
+{
+  "name": "Valid User",
+  "email": "validuser@example.com",
+  "password": "validpassword",
+  "costPerDay": 100,
+  "sellPerDay": 150
+}
+
+### Test Invalid User Data
+POST http://localhost:8080/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NjNDYxZDZiYTJiYzI2MDgzY2I4NTQiLCJpYXQiOjE3NDE0NDA1NDEsImV4cCI6MTc3Mjk5ODE0MX0.hloGsCdxsp57sfmfoFCN-XRC-2_fSkOmXhmUY9f_P9g
+
+{
+  "name": "",
+  "email": "invalid-email",
+  "password": "123",
+  "costPerDay": "invalid",
+  "sellPerDay": "invalid"
+}
+
+### Test Valid Project Data
+POST http://localhost:8080/project
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NjNDYxZDZiYTJiYzI2MDgzY2I4NTQiLCJpYXQiOjE3NDE0NDA1NDEsImV4cCI6MTc3Mjk5ODE0MX0.hloGsCdxsp57sfmfoFCN-XRC-2_fSkOmXhmUY9f_P9g
+
+{
+  "name": "Valid Project",
+  "type": "startup-project",
+  "paymentCycle": "MONTHLY",
+  "budget_max_monthly": 5000
+}
+
+### Test Invalid Project Data
+POST http://localhost:8080/project
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NjNDYxZDZiYTJiYzI2MDgzY2I4NTQiLCJpYXQiOjE3NDE0NDA1NDEsImV4cCI6MTc3Mjk5ODE0MX0.hloGsCdxsp57sfmfoFCN-XRC-2_fSkOmXhmUY9f_P9g
+
+{
+  "name": "",
+  "type": "invalid-type",
+  "paymentCycle": "invalid-cycle",
+  "budget_max_monthly": "invalid"
+}
+
+### Test Valid Activity Data
+POST http://localhost:8080/activity
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NjNDYxZDZiYTJiYzI2MDgzY2I4NTQiLCJpYXQiOjE3NDE0NDA1NDEsImV4cCI6MTc3Mjk5ODE0MX0.hloGsCdxsp57sfmfoFCN-XRC-2_fSkOmXhmUY9f_P9g
+
+{
+  "projectId": "60d21b4667d0d8992e610c85",
+  "userId": "60d21b4667d0d8992e610c86",
+  "date": "2023-10-10",
+  "total": 100,
+  "cost": 50,
+  "value": 150
+}
+
+### Test Invalid Activity Data
+POST http://localhost:8080/activity
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2NjNDYxZDZiYTJiYzI2MDgzY2I4NTQiLCJpYXQiOjE3NDE0NDA1NDEsImV4cCI6MTc3Mjk5ODE0MX0.hloGsCdxsp57sfmfoFCN-XRC-2_fSkOmXhmUY9f_P9g
+
+{
+  "projectId": "",
+  "userId": "",
+  "date": "invalid-date",
+  "total": "invalid",
+  "cost": "invalid",
+  "value": "invalid"
+}

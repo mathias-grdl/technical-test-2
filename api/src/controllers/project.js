@@ -1,6 +1,8 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
+const { validateProject } = require("../validators/project");
+const validationMiddleware = require("../middleware/validationMiddleware");
 
 const ProjectObject = require("../models/project");
 
@@ -27,7 +29,7 @@ router.get("/:id", passport.authenticate("user", { session: false }), async (req
   }
 });
 
-router.post("/", passport.authenticate("user", { session: false }), async (req, res) => {
+router.post("/", passport.authenticate("user", { session: false }), validateProject, validationMiddleware, async (req, res) => {
   try {
     const data = await ProjectObject.create({ ...req.body, organisation: req.user.organisation });
     return res.status(200).send({ data, ok: true });
@@ -48,7 +50,7 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
   }
 });
 
-router.put("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+router.put("/:id", passport.authenticate("user", { session: false }), validateProject, validationMiddleware, async (req, res) => {
   try {
     const obj = req.body;
 
