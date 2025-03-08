@@ -5,7 +5,13 @@ const { MONGO_URL } = require("./config.js");
 
 if (MONGO_URL) {
   console.log("load", MONGO_URL);
-  mongoose.connect(MONGO_URL, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(MONGO_URL, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000, 
+  });
 } else {
   console.log("ERROR CONNEXION. MONGO URL EMPTY");
 }
