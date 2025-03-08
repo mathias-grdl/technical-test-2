@@ -15,6 +15,7 @@ const DrawerDesktop = () => {
           <Link to="/project" title="Projects" Icon={ProjectsIcon} />
           <Link to="/activity" title="Activities" Icon={ActivitiesIcon} />
           <Link to="/user" title="People" Icon={PeopleIcon} />
+          <Link to="/analytics" title="Analytics" Icon={PeopleIcon} />
         </Section>
 
         <div className="h-10" />
@@ -23,7 +24,7 @@ const DrawerDesktop = () => {
   );
 };
 
-const Link = ({ Icon, title, to, onClick = () => {} }) => {
+const Link = ({ Icon, title, to, onClick = () => { } }) => {
   return (
     <li>
       <NavLink
