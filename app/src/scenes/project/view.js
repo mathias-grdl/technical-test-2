@@ -82,11 +82,12 @@ const ProjectDetails = ({ project }) => {
                   <span className="text-[16px] text-[#676D7C] font-medium">{project.description ? project.description : ""}</span>
                 </div>
                 <div className="mt-4 text-[18px] text-[#000000] font-semibold">
-                  {`Objective :`} <span className="text-[#676D7C] text-[16px] font-medium">{project.objective ? project.objective : ""}</span>
+                  {`Objective :`} <span className="text-[#676D7C] text-[16px] font-medium">{project.objective || "No objective set"}</span>
                 </div>
                 <div className="mt-2 mr-2">
-                  <span className="text-[18px] font-semibold text-[#000000]">Budget consummed {project.paymentCycle === "MONTHLY" && "this month"}:</span>
-
+                  <span className="text-[18px] font-semibold text-[#000000]">
+                    Budget consummed {project?.paymentCycle === "MONTHLY" && "this month"}:
+                  </span>
                   <Budget project={project} />
                 </div>
               </div>

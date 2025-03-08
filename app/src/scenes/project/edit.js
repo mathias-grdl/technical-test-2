@@ -17,7 +17,8 @@ export default function EditProject() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      console.log("Edit - Données reçues du projet:", u);
+      setProject(Array.isArray(u) ? u[0] : u); // Même correction que dans view.js
     })();
   }, []);
 
@@ -48,11 +49,12 @@ export default function EditProject() {
             initialValues={project}
             onSubmit={async (values) => {
               try {
-                await api.put(`/project/${project._id}`, values);
-                toast.success(`${project.name} updated!`);
-                history.push(`/project/${project._id}`);
+                console.log("Données envoyées pour mise à jour:", values);
+                await api.put(`/project/${id}`, values);
+                toast.success(`${values.name} updated!`);
+                history.push(`/project/${id}`);
               } catch (e) {
-                console.log(e);
+                console.log("Erreur lors de la mise à jour:", e);
                 toast.error("Some Error!");
               }
             }}>
