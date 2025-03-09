@@ -25,7 +25,7 @@ export default function ProjectView() {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
       console.log("Données du projet reçues:", u);
-      setProject(Array.isArray(u) ? u[0] : u);
+      setProject(u);
     })();
   }, []);
 
