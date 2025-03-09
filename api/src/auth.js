@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const config = require("./config");
-const { validatePassword } = require("./utils");
+const { validatePassword } = require("./utils/validatePassword");
 
 const EMAIL_OR_PASSWORD_INVALID = "EMAIL_OR_PASSWORD_INVALID";
 const PASSWORD_INVALID = "PASSWORD_INVALID";

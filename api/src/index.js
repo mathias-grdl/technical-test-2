@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const { GlobalRoutes } = require("./routes/allRoutes.js");
+
 
 require("./mongo");
 
@@ -19,9 +21,11 @@ app.use(cookieParser());
 
 app.use(express.static(__dirname + "/../public"));
 
-app.use("/user", require("./controllers/user"));
-app.use("/project", require("./controllers/project"));
-app.use("/activity", require("./controllers/activity"));
+// app.use("/user", require("./controllers/user"));
+// app.use("/project", require("./controllers/project"));
+// app.use("/activity", require("./controllers/activity"));
+
+GlobalRoutes(app);
 
 const d = new Date();
 

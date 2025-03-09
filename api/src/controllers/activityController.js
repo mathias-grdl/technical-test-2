@@ -1,15 +1,9 @@
-const express = require("express");
-const passport = require("passport");
-const router = express.Router();
-
-const ActivityObject = require("../models/activity");
-const ProjectObject = require("../models/project");
-const { validateActivity } = require("../validators/activity");
-const validationMiddleware = require("../middleware/validationMiddleware");
+const ActivityObject = require("../models/activityModel");
+const ProjectObject = require("../models/projectModel");
 
 const SERVER_ERROR = "SERVER_ERROR";
 
-router.get("/", passport.authenticate("user", { session: false }), async (req, res) => {
+async function getActivities(req, res) {
   try {
     const query = {};
     if (req.query.userId) query.user = req.query.userId;
@@ -38,9 +32,9 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.post("/", passport.authenticate("user", { session: false }), validateActivity, validationMiddleware, async (req, res) => {
+async function createActivity(req, res) {
   try {
     const body = req.body;
     await ProjectObject.findOneAndUpdate({ _id: body.projectId }, { last_updated_at: new Date() }, { new: true });
@@ -52,9 +46,9 @@ router.post("/", passport.authenticate("user", { session: false }), validateActi
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.delete("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+async function deleteActivity(req, res) {
   try {
     await ActivityObject.findByIdAndDelete(req.params.id);
     res.status(200).send({ ok: true, data: null });
@@ -62,6 +56,10 @@ router.delete("/:id", passport.authenticate("user", { session: false }), async (
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-module.exports = router;
+module.exports = {
+  getActivities,
+  createActivity,
+  deleteActivity
+};

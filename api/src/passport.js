@@ -4,7 +4,7 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const { secret } = require("./config");
 
 // load up the user model
-const User = require("./models/user");
+const User = require("./models/userModel");
 
 function getToken(req) {
   let token = ExtractJwt.fromAuthHeaderWithScheme("JWT")(req);

@@ -1,11 +1,6 @@
-const express = require("express");
-const passport = require("passport");
-const router = express.Router();
-
-const UserObject = require("../models/user");
+const UserObject = require("../models/userModel");
 const AuthObject = require("../auth");
-
-const { validatePassword } = require("../utils");
+const { validatePassword } = require('../utils/validatePassword.js');
 
 const UserAuth = new AuthObject(UserObject);
 
@@ -13,24 +8,33 @@ const SERVER_ERROR = "SERVER_ERROR";
 const USER_ALREADY_REGISTERED = "USER_ALREADY_REGISTERED";
 const PASSWORD_NOT_VALIDATED = "PASSWORD_NOT_VALIDATED";
 
-router.post("/signin", (req, res) => UserAuth.signin(req, res));
-router.post("/logout", (req, res) => UserAuth.logout(req, res));
-router.post("/signup", (req, res) => UserAuth.signup(req, res));
+async function signin(req, res) {
+  return UserAuth.signin(req, res);
+}
 
-router.get("/signin_token", passport.authenticate("user", { session: false }), (req, res) => UserAuth.signinToken(req, res));
+async function logout(req, res) {
+  return UserAuth.logout(req, res);
+}
 
-router.get("/available", passport.authenticate("user", { session: false }), async (req, res) => {
+async function signup(req, res) {
+  return UserAuth.signup(req, res);
+}
+
+async function signinToken(req, res) {
+  return UserAuth.signinToken(req, res);
+}
+
+async function getAvailableUsers(req, res) {
   try {
     const users = await UserObject.find({ availability: { $ne: "not available" }, organisation: req.user.organisation }).sort("-last_login_at");
-
     return res.status(200).send({ ok: true, data: users });
   } catch (error) {
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.get("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+async function getUserById(req, res) {
   try {
     const data = await UserObject.findOne({ _id: req.params.id });
     return res.status(200).send({ ok: true, data });
@@ -38,9 +42,9 @@ router.get("/:id", passport.authenticate("user", { session: false }), async (req
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.post("/", passport.authenticate("user", { session: false }), async (req, res) => {
+async function createUser(req, res) {
   try {
     if (!validatePassword(req.body.password)) return res.status(400).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
 
@@ -52,9 +56,9 @@ router.post("/", passport.authenticate("user", { session: false }), async (req, 
     console.log(error);
     return res.status(500).send({ ok: false, code: SERVER_ERROR });
   }
-});
+}
 
-router.get("/", passport.authenticate("user", { session: false }), async (req, res) => {
+async function getAllUsers(req, res) {
   try {
     const users = await UserObject.find({ ...req.query, organisation: req.user.organisation }).sort("-last_login_at");
     return res.status(200).send({ ok: true, data: users });
@@ -62,9 +66,9 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.put("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+async function updateUserById(req, res) {
   try {
     const obj = req.body;
 
@@ -74,9 +78,9 @@ router.put("/:id", passport.authenticate("user", { session: false }), async (req
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.put("/", passport.authenticate("user", { session: false }), async (req, res) => {
+async function updateCurrentUser(req, res) {
   try {
     const obj = req.body;
     const data = await UserObject.findByIdAndUpdate(req.user._id, obj, { new: true });
@@ -85,9 +89,9 @@ router.put("/", passport.authenticate("user", { session: false }), async (req, r
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-router.delete("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+async function deleteUserById(req, res) {
   try {
     await UserObject.findOneAndRemove({ _id: req.params.id });
     res.status(200).send({ ok: true });
@@ -95,6 +99,18 @@ router.delete("/:id", passport.authenticate("user", { session: false }), async (
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
-});
+}
 
-module.exports = router;
+module.exports = {
+  signin,
+  logout,
+  signup,
+  signinToken,
+  getAvailableUsers,
+  getUserById,
+  createUser,
+  getAllUsers,
+  updateUserById,
+  updateCurrentUser,
+  deleteUserById
+};
