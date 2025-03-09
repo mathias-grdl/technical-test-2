@@ -15,7 +15,10 @@ async function getProjects(req, res) {
 
 async function getProjectById(req, res) {
   try {
-    const data = await ProjectObject.find({ _id: req.params.id });
+    const data = await ProjectObject.findById(req.params.id);
+    if (!data) {
+      return res.status(404).send({ ok: false, code: "PROJECT_NOT_FOUND" });
+    }
     return res.status(200).send({ ok: true, data });
   } catch (error) {
     console.log(error);
