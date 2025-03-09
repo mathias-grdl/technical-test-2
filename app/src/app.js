@@ -10,7 +10,7 @@ import Activity from "./scenes/activity";
 import Auth from "./scenes/auth";
 import Project from "./scenes/project";
 import User from "./scenes/user";
-import Analytics from "./scenes/analytics";
+import Analytics from "./scenes/analytics/analyticsPage";
 
 import Account from "./scenes/account";
 
